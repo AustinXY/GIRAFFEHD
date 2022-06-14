@@ -47,6 +47,14 @@ to perform object vertical translation.
 Model checkpoints are available in [google drive](https://drive.google.com/drive/folders/131hxrDhY1QVvfXGfvper60NYew5nc8Uq?usp=sharing).
 
 
+## Acknowledgment
+Thanks to [giraffe](https://github.com/autonomousvision/giraffe) and [stylegan2-pytorch](https://github.com/rosinality/stylegan2-pytorch)
+
+
+## License
+This repository is released under the MIT license.
+
+
 ## Citation
 ```
 @inproceedings{xue2022giraffehd,
@@ -56,6 +64,3 @@ booktitle   = {CVPR},
 year      = {2022},
 }
 ```
-
-## Acknowledgment
-Thanks to [giraffe](https://github.com/autonomousvision/giraffe) and [stylegan2-pytorch](https://github.com/rosinality/stylegan2-pytorch)
