@@ -34,7 +34,7 @@ python eval.py --ckpt CKPT --batch BATCH_SIZE --control_i CONTROL_I
 Use `--control_i` to specify which feature to control, <br>
 ```
 0: fg_shape; 1: fg_app; 2: bg_shape; 3: bg_app; 4: camera rotation angle; 5: elevation angle;
-7: scale; 8: translation; 9: rotation; 10: bg translation; 11: bg rotation;
+7: scale; 8: translation; 9: rotation;
 ```
 Change L168-183 in `eval.py` to specify interpolation interval if needed (training intervals will be used if not specified). For example, set `--control_i` to 8, and
 ```
