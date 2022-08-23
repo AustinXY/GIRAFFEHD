@@ -70,29 +70,29 @@ def get_interval(args):
             p1 = torch.tensor([[args.rotation_range[1]]]).repeat(
                 args.batch, 1).to(args.device)
 
-    elif args.control_i == 10:
-        if args.bg_translation_range_min is None:
-            p0 = torch.tensor([args.ckpt_args.bg_translation_range_min]).repeat(
-                args.batch, 1).to(args.device)
-            p1 = torch.tensor([args.ckpt_args.bg_translation_range_max]).repeat(
-                args.batch, 1).to(args.device)
-        else:
-            p0 = torch.tensor([args.bg_translation_range_min]).repeat(
-                args.batch, 1).to(args.device)
-            p1 = torch.tensor([args.bg_translation_range_max]).repeat(
-                args.batch, 1).to(args.device)
+#     elif args.control_i == 10:
+#         if args.bg_translation_range_min is None:
+#             p0 = torch.tensor([args.ckpt_args.bg_translation_range_min]).repeat(
+#                 args.batch, 1).to(args.device)
+#             p1 = torch.tensor([args.ckpt_args.bg_translation_range_max]).repeat(
+#                 args.batch, 1).to(args.device)
+#         else:
+#             p0 = torch.tensor([args.bg_translation_range_min]).repeat(
+#                 args.batch, 1).to(args.device)
+#             p1 = torch.tensor([args.bg_translation_range_max]).repeat(
+#                 args.batch, 1).to(args.device)
 
-    elif args.control_i == 11:
-        if args.bg_rotation_range is None:
-            p0 = torch.tensor([[args.ckpt_args.bg_rotation_range[0]]]).repeat(
-                args.batch, 1).to(args.device)
-            p1 = torch.tensor([[args.ckpt_args.bg_rotation_range[1]]]).repeat(
-                args.batch, 1).to(args.device)
-        else:
-            p0 = torch.tensor([[args.bg_rotation_range[0]]]).repeat(
-                args.batch, 1).to(args.device)
-            p1 = torch.tensor([[args.bg_rotation_range[1]]]).repeat(
-                args.batch, 1).to(args.device)
+#     elif args.control_i == 11:
+#         if args.bg_rotation_range is None:
+#             p0 = torch.tensor([[args.ckpt_args.bg_rotation_range[0]]]).repeat(
+#                 args.batch, 1).to(args.device)
+#             p1 = torch.tensor([[args.ckpt_args.bg_rotation_range[1]]]).repeat(
+#                 args.batch, 1).to(args.device)
+#         else:
+#             p0 = torch.tensor([[args.bg_rotation_range[0]]]).repeat(
+#                 args.batch, 1).to(args.device)
+#             p1 = torch.tensor([[args.bg_rotation_range[1]]]).repeat(
+#                 args.batch, 1).to(args.device)
 
     return p0, p1
 
@@ -109,7 +109,7 @@ def eval(args, generator):
             img = generator(img_rep=img_rep, inject_index=args.inj_idx, mode='eval')[0]
             img_li.append(img)
 
-    if args.control_i in list(range(4,12)):
+    if args.control_i in list(range(4,10)):
         p0, p1 = get_interval(args)
         delta = (p1 - p0) / (args.n_sample - 1)
 
@@ -151,7 +151,7 @@ if __name__ == "__main__":
 
     parser.add_argument("--control_i", type=int, default=0, help='control index')
     # 0: fg_shape; 1: fg_app; 2: bg_shape;    3: bg_app;   4: camera rotation angle;  5: elevation angle;
-    # --: radius;  7: scale;  8: translation; 9: rotation; 10: bg translation;        11: bg rotation;
+    # --: radius;  7: scale;  8: translation; 9: rotation;
 
     args = parser.parse_args()
 
