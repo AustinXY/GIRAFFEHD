@@ -8,7 +8,7 @@ import torch
 from torch import nn
 from tqdm import tqdm
 
-from model import TwoStageGenerator_Refine
+from model import GIRAFFEHDGenerator
 from torchvision.models.segmentation import deeplabv3_resnet101
 from scipy import linalg
 from torch.nn import functional as F
@@ -181,7 +181,7 @@ if __name__ == '__main__':
         args.bbox_render_size = 16
         args.eval_inj_idx = 4
 
-    generator = TwoStageGenerator_Refine(
+    generator = GIRAFFEHDGenerator(
         device=device,
         z_dim=args.z_dim,
         z_dim_bg=args.z_dim_bg,
