@@ -1,5 +1,3 @@
-# using s code encoder to repredict s code for color, shape disentanglement
-
 import argparse
 import os
 # os.environ['CUDA_VISIBLE_DEVICES'] = '1'
