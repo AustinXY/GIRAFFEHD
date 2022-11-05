@@ -237,31 +237,6 @@ if __name__ == '__main__':
 
         mutual_bg_mask = (1-mask0) * (1-mask1)
 
-        # if torch.sum(torch.isnan(torch.sum(mutual_bg_mask, dim=(1, 2, 3)))):
-        #     utils.save_image(
-        #         mutual_bg_mask,
-        #         f'tttt.png',
-        #         nrow=8,
-        #         normalize=True,
-        #         range=(0, 1),
-        #     )
-        #     utils.save_image(
-        #         img0,
-        #         f'tt.png',
-        #         nrow=8,
-        #         normalize=True,
-        #         range=(0, 1),
-        #     )
-        #     utils.save_image(
-        #         img1,
-        #         f'ttt.png',
-        #         nrow=8,
-        #         normalize=True,
-        #         range=(0, 1),
-        #     )
-        #     print('nan detected')
-        #     sys.exit()
-
         diff = F.l1_loss(mutual_bg_mask*img1, mutual_bg_mask*img0, reduction='none')
         diff = torch.where(diff < 1/255, torch.zeros_like(diff), torch.ones_like(diff))
         diff = torch.sum(diff, dim=1)
