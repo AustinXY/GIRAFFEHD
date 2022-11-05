@@ -2,7 +2,7 @@
 
 import argparse
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+# os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 
 import torch
 from torch import nn
