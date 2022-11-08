@@ -222,65 +222,21 @@ if __name__ == '__main__':
 
     for batch in tqdm(batch_li):
         img_rep = g_module.get_rand_rep(batch)
-        img_li = generator(batch, img_rep=img_rep, noises=noises, inject_index=args.eval_inj_idx, mode='eval', return_ids=[])
-        img0 = img_li[0]
-        bg0 = img_li[2]
+        img0 = generator(batch, img_rep=img_rep, noises=noises, inject_index=args.eval_inj_idx, mode='eval')[0]     
         img0 = norm_range(img0)
         mask0 = get_mask(seg_net, img0, args.cid).unsqueeze(1)
 
         img_rep = latent_change_fg(g_module, img_rep)
-        img1 = generator(batch, img_rep=img_rep, noises=noises, inject_index=args.eval_inj_idx, mode='eval', _bg_img=bg0)[0]
+        img1 = generator(batch, img_rep=img_rep, noises=noises, inject_index=args.eval_inj_idx, mode='eval')[0]
         img1 = norm_range(img1)
         mask1 = get_mask(seg_net, img1, args.cid).unsqueeze(1)
-
+        
         mutual_bg_mask = (1-mask0) * (1-mask1)
 
         diff = F.l1_loss(mutual_bg_mask*img1, mutual_bg_mask*img0, reduction='none')
         diff = torch.where(diff < 1/255, torch.zeros_like(diff), torch.ones_like(diff))
         diff = torch.sum(diff, dim=1)
         diff = torch.where(diff < 1, torch.zeros_like(diff), torch.ones_like(diff))
-
-        utils.save_image(
-            (1-mask1)*img1,
-            f'temp/mask1.png',
-            nrow=8,
-            normalize=True,
-            range=(0, 1),
-            padding=0,
-        )
-        utils.save_image(
-            (1-mask0)*img0,
-            f'temp/mask0.png',
-            nrow=8,
-            normalize=True,
-            range=(0, 1),
-            padding=0,
-        )
-        utils.save_image(
-            img0,
-            f'temp/img0.png',
-            nrow=8,
-            normalize=True,
-            range=(0, 1),
-            padding=0,
-        )
-        utils.save_image(
-            img1,
-            f'temp/img1.png',
-            nrow=8,
-            normalize=True,
-            range=(0, 1),
-            padding=0,
-        )
-        utils.save_image(
-            diff.unsqueeze(1),
-            f'temp/diff.png',
-            nrow=8,
-            normalize=True,
-            range=(0, 1),
-            padding=0,
-        )
-        sys.exit()
 
         change_fg_score += torch.sum(torch.sum(diff, dim=(1,2)) / (torch.sum(mutual_bg_mask, dim=(1,2,3))+1e-8))
 
